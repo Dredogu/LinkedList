@@ -69,12 +69,56 @@ public:
         }
     }
 
+    T DeleteFirst(){
+        T temp;
+        if(first){
+            Node<T> *node = first;
+            temp = node->data;
+            first = first->next;
+            delete node;
+        }
+
+        return temp;
+    }
+
+    T Delete(int pos){
+        T temp;
+        if(pos == 1){
+            temp = this->DeleteFirst();
+        }
+        else{
+            Node<T> *prev = first;
+            Node<T> *curr = first;
+            for(int i = 1; i < pos && curr->next; i++){
+                prev = curr;
+                curr = curr->next;
+            }
+            prev->next = curr->next;
+            temp = curr->data;
+            delete curr;
+        }
+
+        return temp;
+    }
+
     void Print(){
         Node<T> *p = first;
         while(p){
             cout << p->data << endl;
             p = p->next;
         }
+    }
+
+    ~LinkedList(){
+        Node<T> *current = first;
+        Node<T> *p;
+        while(current){
+            p = current->next;
+            delete current;
+            current = p;
+        }
+        first = nullptr;
+        this->Print();
     }
 };
 
@@ -92,6 +136,8 @@ int main(){
 
     list.Insert(2, "Asim");
     list.Insert(1, "Feride");
+    //list.DeleteFirst();
+    cout << "Delete: " << list.Delete(2) << endl;
 
     list.Print();
 
